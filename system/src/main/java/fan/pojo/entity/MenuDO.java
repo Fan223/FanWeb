@@ -21,6 +21,8 @@ public class MenuDO {
 
     private String parentId;
 
+    private String position;
+
     private String name;
 
     private String path;

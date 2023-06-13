@@ -12,4 +12,12 @@
     <artifactId>word</artifactId>
 
     <name>word</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>fan</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

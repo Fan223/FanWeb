@@ -3,6 +3,7 @@ package fan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import fan.core.util.CollectionUtil;
 import fan.core.util.IdUtil;
+import fan.core.util.MapUtil;
 import fan.dao.MenuDAO;
 import fan.lang.*;
 import fan.pojo.dto.MenuDTO;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 菜单管理实现类
@@ -40,15 +42,26 @@ public class MenuServiceImpl implements MenuService {
             LambdaQueryWrapper<MenuDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(menuQuery.getFlag()), MenuDO::getFlag, menuQuery.getFlag())
+                    .eq(StringUtil.INSTANCE.isNotBlank(menuQuery.getPosition()), MenuDO::getPosition, menuQuery.getPosition())
                     .in(CollectionUtil.isNotEmpty(menuQuery.getType()), MenuDO::getType, menuQuery.getType())
                     .like(StringUtil.INSTANCE.isNotBlank(menuQuery.getName()), MenuDO::getName, menuQuery.getName())
                     .orderByAsc(MenuDO::getOrderNum);
-
             List<MenuVO> menuVos = SysMapStruct.INSTANCE.transMenu(menuDAO.selectList(queryWrapper));
             return Response.success(SysUtil.buildTree(menuVos));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return Response.fail("查询菜单出现异常!");
+        }
+    }
+
+    @Override
+    public Response listChildMenus(String id) {
+        try {
+            List<MenuDO> asideMenus = menuDAO.listChildMenus(id);
+            return Response.success(SysUtil.buildTree(SysMapStruct.INSTANCE.transMenu(asideMenus)));
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+            return Response.fail("查询侧栏菜单出现异常!");
         }
     }
 

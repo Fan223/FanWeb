@@ -17,6 +17,8 @@ public class MenuDTO implements Insert, Update {
 
     private String parentId;
 
+    private String position;
+
     private String name;
 
     private String path;

@@ -16,6 +16,8 @@ import java.util.List;
 @Builder
 public class MenuQuery implements Query {
 
+    private String position;
+
     private String name;
 
     private List<Integer> type;

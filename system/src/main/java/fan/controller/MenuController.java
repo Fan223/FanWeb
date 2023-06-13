@@ -24,8 +24,15 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping("/listNavMenus")
-    public Response listNavMenus() {
-        return menuService.list(MenuQuery.builder().type(ListUtil.list(1, 2)).flag("Y").build());
+    public Response listNavMenus(MenuQuery menuQuery) {
+        menuQuery.setFlag("Y");
+        menuQuery.setType(ListUtil.list(1, 2, 4));
+        return menuService.list(menuQuery);
+    }
+
+    @GetMapping("/listChildMenus/{id}")
+    public Response listChildMenus(@PathVariable("id") String id) {
+        return menuService.listChildMenus(id);
     }
 
     @GetMapping("/listMenus")

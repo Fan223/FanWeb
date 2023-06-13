@@ -18,6 +18,8 @@ public class MenuVO {
 
     private String parentId;
 
+    private String position;
+
     private String name;
 
     private String path;
@@ -43,5 +45,10 @@ public class MenuVO {
             children = new ArrayList<>();
         }
         return children;
+    }
+
+    @Override
+    protected MenuVO clone() throws CloneNotSupportedException {
+        return (MenuVO) super.clone();
     }
 }
