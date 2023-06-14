@@ -35,6 +35,11 @@ public class MenuController {
         return menuService.listChildMenus(id);
     }
 
+    @GetMapping("/listTopChildMenus/{id}")
+    public Response listTopChildMenus(@PathVariable("id") String id) {
+        return menuService.listTopChildMenus(id);
+    }
+
     @GetMapping("/listMenus")
     public Response listMenus(MenuQuery menuQuery) {
         return menuService.list(menuQuery);

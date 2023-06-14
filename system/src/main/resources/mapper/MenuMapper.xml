@@ -4,17 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fan.dao.MenuDAO">
     <select id="listChildMenus" resultType="fan.pojo.entity.MenuDO">
-        with recursive temp as (select *
-                                from menu m1
-                                where id = #{id}
-                                union all
-                                select m2.*
-                                from menu m2
-                                         inner join temp on m2.parent_id = temp.id)
-        select *
-        from temp
-        where id != #{id}
-          and type in (1
-            , 2);
+        with recursive temp as (
+            select * from menu m1 where id = #{id}
+            union all
+            select m2.* from menu m2 inner join temp on m2.parent_id = temp.id
+        )
+        select * from temp where id != #{id} and type in (1, 2);
+    </select>
+    <select id="getTopParentMenu" resultType="java.lang.String">
+        with recursive temp as (
+            select * from menu m1 where id = #{id}
+            union all
+            select m2.* from menu m2 inner join temp on m2.id = temp.parent_id
+        )
+        select id from temp where parent_id is null;
     </select>
 </mapper>

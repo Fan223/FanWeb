@@ -23,4 +23,14 @@ public interface MenuDAO extends BaseMapper<MenuDO> {
      * @since 2023/6/13 9:02
      */
     List<MenuDO> listChildMenus(String id);
+
+    /**
+     * 查询顶层父菜单
+     *
+     * @param id ID
+     * @return {@link MenuDO}
+     * @author Fan
+     * @since 2023/6/14 14:46
+     */
+    String getTopParentMenu(String id);
 }

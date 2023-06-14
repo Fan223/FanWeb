@@ -3,6 +3,7 @@ package fan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import fan.core.util.CollectionUtil;
 import fan.core.util.IdUtil;
+import fan.core.util.ListUtil;
 import fan.core.util.MapUtil;
 import fan.dao.MenuDAO;
 import fan.lang.*;
@@ -47,7 +48,10 @@ public class MenuServiceImpl implements MenuService {
                     .like(StringUtil.INSTANCE.isNotBlank(menuQuery.getName()), MenuDO::getName, menuQuery.getName())
                     .orderByAsc(MenuDO::getOrderNum);
             List<MenuVO> menuVos = SysMapStruct.INSTANCE.transMenu(menuDAO.selectList(queryWrapper));
-            return Response.success(SysUtil.buildTree(menuVos));
+            List<MenuVO> topMenuVos = menuVos.stream().filter(menuVO -> "top".equals(menuVO.getPosition())).map(MenuVO::new).collect(Collectors.toList());
+
+            return Response.success(MapUtil.builder().put("top", SysUtil.buildTree(topMenuVos))
+                    .put("aside", SysUtil.buildTree(menuVos)).build());
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return Response.fail("查询菜单出现异常!");
@@ -57,12 +61,25 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Response listChildMenus(String id) {
         try {
-            List<MenuDO> asideMenus = menuDAO.listChildMenus(id);
-            return Response.success(SysUtil.buildTree(SysMapStruct.INSTANCE.transMenu(asideMenus)));
+            List<MenuDO> childMenus = menuDAO.listChildMenus(id);
+            return Response.success(SysUtil.buildTree(SysMapStruct.INSTANCE.transMenu(childMenus)));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return Response.fail("查询侧栏菜单出现异常!");
         }
+    }
+
+    @Override
+    public Response listTopChildMenus(String id) {
+        try {
+            String topMenuId = menuDAO.getTopParentMenu(id);
+            List<MenuVO> childMenus = ListUtil.castToList(MenuVO.class, listChildMenus(topMenuId).getData());
+            return Response.success(MapUtil.builder().put("topMenuId", topMenuId).put("childMenus", childMenus).build());
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+            return Response.fail("查询顶层父菜单的子菜单出现异常!");
+        }
+
     }
 
     @Override
