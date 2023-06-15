@@ -51,7 +51,7 @@ public class MenuServiceImpl implements MenuService {
             List<MenuVO> topMenuVos = menuVos.stream().filter(menuVO -> "top".equals(menuVO.getPosition())).map(MenuVO::new).collect(Collectors.toList());
 
             return Response.success(MapUtil.builder().put("top", SysUtil.buildTree(topMenuVos))
-                    .put("aside", SysUtil.buildTree(menuVos)).build());
+                    .put("all", SysUtil.buildTree(menuVos)).build());
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return Response.fail("查询菜单出现异常!");
@@ -88,10 +88,6 @@ public class MenuServiceImpl implements MenuService {
             MenuDO menuDO = SysMapStruct.INSTANCE.transMenu((MenuDTO) insert);
 
             menuDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
-            if (StringUtil.INSTANCE.isBlank(menuDO.getIcon())) {
-                menuDO.setIcon(null);
-            }
-
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
             menuDO.setCreateTime(timestamp);
             menuDO.setUpdateTime(timestamp);
@@ -107,12 +103,7 @@ public class MenuServiceImpl implements MenuService {
     public Response update(Update update) {
         try {
             MenuDO menuDO = SysMapStruct.INSTANCE.transMenu((MenuDTO) update);
-
-            if (StringUtil.INSTANCE.isBlank(menuDO.getIcon())) {
-                menuDO.setIcon(null);
-            }
             menuDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
-
             return Response.success(menuDAO.updateById(menuDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());

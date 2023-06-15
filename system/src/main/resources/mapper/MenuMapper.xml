@@ -5,17 +5,24 @@
 <mapper namespace="fan.dao.MenuDAO">
     <select id="listChildMenus" resultType="fan.pojo.entity.MenuDO">
         with recursive temp as (
-            select * from menu m1 where id = #{id}
+            select id, parent_id, position, name, path, permission, component, type, icon, order_num, flag, create_time, update_time
+            from menu m1 where id = #{id}
             union all
-            select m2.* from menu m2 inner join temp on m2.parent_id = temp.id
+            select m2.id, m2.parent_id, m2.position, m2.name, m2.path, m2.permission, m2.component, m2.type, m2.icon,
+                   m2.order_num, m2.flag, m2.create_time, m2.update_time
+            from menu m2 inner join temp on m2.parent_id = temp.id
         )
-        select * from temp where id != #{id} and type in (1, 2);
+        select id, parent_id, position, name, path, permission, component, type, icon, order_num, flag, create_time, update_time
+        from temp where id != #{id} and type in (1, 2) order by order_num;
     </select>
     <select id="getTopParentMenu" resultType="java.lang.String">
         with recursive temp as (
-            select * from menu m1 where id = #{id}
+            select id, parent_id, position, name, path, permission, component, type, icon, order_num, flag, create_time, update_time
+            from menu m1 where id = #{id}
             union all
-            select m2.* from menu m2 inner join temp on m2.id = temp.parent_id
+            select m2.id, m2.parent_id, m2.position, m2.name, m2.path, m2.permission, m2.component, m2.type, m2.icon,
+                   m2.order_num, m2.flag, m2.create_time, m2.update_time
+            from menu m2 inner join temp on m2.id = temp.parent_id
         )
         select id from temp where parent_id is null;
     </select>

@@ -1,5 +1,7 @@
 package fan.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class MenuDO {
     @TableId
     private String id;
 
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String parentId;
 
     private String position;
@@ -33,6 +36,7 @@ public class MenuDO {
 
     private Integer type;
 
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String icon;
 
     private Integer orderNum;
