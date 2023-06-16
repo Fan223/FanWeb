@@ -1,4 +1,4 @@
-package fan.service.impl;
+package fan.service.impl.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -95,7 +95,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Response update(Update update) {
-        ArticleDO articleDO = (ArticleDO) update;
+        ArticleDO articleDO = BlogMapStruct.INSTANCE.transArticle((ArticleDTO) update);
         articleDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         articleDAO.updateById(articleDO);
         return Response.success(articleDO.getId());
