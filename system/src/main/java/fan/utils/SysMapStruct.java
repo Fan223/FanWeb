@@ -2,10 +2,13 @@ package fan.utils;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.pojo.dto.MenuDTO;
+import fan.pojo.dto.RoleDTO;
 import fan.pojo.dto.UserDTO;
 import fan.pojo.entity.MenuDO;
+import fan.pojo.entity.RoleDO;
 import fan.pojo.entity.UserDO;
 import fan.pojo.vo.MenuVO;
+import fan.pojo.vo.RoleVO;
 import fan.pojo.vo.UserVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -95,4 +98,45 @@ public interface SysMapStruct {
      * @since 2023/6/9 14:51
      */
     UserDO transUser(UserDTO userDTO);
+
+    /**
+     * 角色实体类转展示类
+     *
+     * @param roleDO 角色实体类
+     * @return {@link RoleVO}
+     * @author Fan
+     * @since 2023/6/19 11:07
+     */
+    @Mapping(target = "createTime", source = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    RoleVO transRole(RoleDO roleDO);
+
+    /**
+     * 角色实体类列表转展示类列表
+     *
+     * @param roleDos 角色实体类列表
+     * @return {@link List<RoleVO>}
+     * @author Fan
+     * @since 2023/6/19 11:08
+     */
+    List<RoleVO> transRole(List<RoleDO> roleDos);
+
+    /**
+     * 角色实体类分页转展示类分页
+     *
+     * @param rolePage 角色实体类分页
+     * @return {@link Page<RoleVO>}
+     * @author Fan
+     * @since 2023/6/19 11:09
+     */
+    Page<RoleVO> transRole(Page<RoleDO> rolePage);
+
+    /**
+     * 角色更新参数转实体类
+     *
+     * @param roleDTO 角色更新参数
+     * @return {@link RoleDO}
+     * @author Fan
+     * @since 2023/6/19 11:10
+     */
+    RoleDO transRole(RoleDTO roleDTO);
 }
