@@ -1,5 +1,7 @@
 package fan.pojo.dto;
 
+import fan.lang.Insert;
+import fan.lang.Update;
 import lombok.Data;
 
 /**
@@ -9,7 +11,7 @@ import lombok.Data;
  * @since 2023/6/19 10:43
  */
 @Data
-public class RoleDTO {
+public class RoleDTO implements Insert, Update {
 
     private String id;
 
