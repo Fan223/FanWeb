@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(userQuery.getFlag()), UserDO::getFlag, userQuery.getFlag())
-                    .like(StringUtil.INSTANCE.isNotBlank(userQuery.getName()), UserDO::getUsername, userQuery.getName());
+                    .like(StringUtil.INSTANCE.isNotBlank(userQuery.getUsername()), UserDO::getUsername, userQuery.getUsername());
 
             Page<UserDO> page = userDAO.selectPage(new Page<>(userQuery.getCurrentPage(), userQuery.getPageSize()), queryWrapper);
             return Response.success(SysMapStruct.INSTANCE.transUser(page));
@@ -78,7 +78,8 @@ public class UserServiceImpl implements UserService {
     public Response update(Update update) {
         try {
             UserDTO userDTO = (UserDTO) update;
-            if (null != selectUser(userDTO.getUsername())) {
+            UserDO selectUser = selectUser(userDTO.getUsername());
+            if (null != selectUser && !selectUser.getId().equals(userDTO.getId())) {
                 return Response.fail("用户名重复", null);
             }
 

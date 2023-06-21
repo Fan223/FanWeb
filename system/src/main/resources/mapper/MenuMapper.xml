@@ -13,8 +13,9 @@
             from menu m2 inner join temp on m2.parent_id = temp.id
         )
         select id, parent_id, position, name, path, permission, component, type, icon, order_num, flag, create_time, update_time
-        from temp where id != #{id} and type in (1, 2) order by order_num;
+        from temp where id != #{id} and type in (1, 2, 4) and flag = 'Y' order by order_num;
     </select>
+
     <select id="getTopParentMenu" resultType="java.lang.String">
         with recursive temp as (
             select id, parent_id, position, name, path, permission, component, type, icon, order_num, flag, create_time, update_time
@@ -24,6 +25,6 @@
                    m2.order_num, m2.flag, m2.create_time, m2.update_time
             from menu m2 inner join temp on m2.id = temp.parent_id
         )
-        select id from temp where parent_id is null;
+        select id from temp where parent_id is null and flag = 'Y';
     </select>
 </mapper>

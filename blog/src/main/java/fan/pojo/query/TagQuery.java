@@ -5,16 +5,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户查询参数
+ * 标签查询参数
  *
  * @author Fan
- * @since 2023/6/9 14:30
+ * @since 2023/6/21 13:55
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserQuery extends BaseQuery {
+public class TagQuery extends BaseQuery {
 
-    private String username;
+    private String name;
 
     private String flag;
 }

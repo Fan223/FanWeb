@@ -28,10 +28,12 @@ public class MenuDO {
 
     private String name;
 
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String path;
 
     private String permission;
 
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String component;
 
     private Integer type;

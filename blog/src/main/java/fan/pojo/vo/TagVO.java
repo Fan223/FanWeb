@@ -3,23 +3,19 @@ package fan.pojo.vo;
 import lombok.Data;
 
 /**
- * 分类展示类
+ * 标签展示类
  *
  * @author Fan
- * @since 2023/6/9 16:04
+ * @since 2023/6/21 13:54
  */
 @Data
-public class CategoryVO {
+public class TagVO {
 
     private String id;
 
     private String name;
 
-    private String remark;
-
     private String flag;
-
-    private Integer orderNum;
 
     private String createTime;
 }
