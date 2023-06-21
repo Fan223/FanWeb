@@ -39,7 +39,9 @@ public class ArticleServiceImpl implements ArticleService {
             LambdaQueryWrapper<ArticleDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(articleQuery.getCategoryId()), ArticleDO::getCategoryId, articleQuery.getCategoryId())
-                    .like(StringUtil.INSTANCE.isNotBlank(articleQuery.getTitle()), ArticleDO::getTitle, articleQuery.getTitle());
+                    .like(StringUtil.INSTANCE.isNotBlank(articleQuery.getTitle()), ArticleDO::getTitle, articleQuery.getTitle())
+                    // 设置查询的字段, 过滤掉不需要的数据
+                    .select(ArticleDO.class, tableFieldInfo -> !"content".equals(tableFieldInfo.getColumn()));
 
             Page<ArticleDO> page = articleDAO.selectPage(new Page<>(articleQuery.getCurrentPage(), articleQuery.getPageSize()), queryWrapper);
             return Response.success(BlogMapStruct.INSTANCE.transArticle(page));

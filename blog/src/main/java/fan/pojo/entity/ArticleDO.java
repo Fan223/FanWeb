@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * @since 2023/6/9 15:15
  */
 @Data
-@TableName("blog")
+@TableName("article")
 public class ArticleDO {
 
     @TableId
