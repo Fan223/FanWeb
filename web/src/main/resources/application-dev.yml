@@ -9,7 +9,7 @@ spring:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver
       url: jdbc:p6spy:mysql://124.222.118.90:3306/fan_web?connectTimeout=5000&socketTimeout=10000&autoReconnect=true&failOverReadOnly=false&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
       username: root
-      password: Fan223
+      password: fan223
       # 关闭空闲检测
       # test-while-idle: false
       # 设置空闲检测语句

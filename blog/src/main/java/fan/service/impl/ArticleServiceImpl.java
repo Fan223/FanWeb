@@ -72,8 +72,9 @@ public class ArticleServiceImpl implements ArticleService {
             if (StringUtil.INSTANCE.isBlank(articleDTO.getId())) {
                 ArticleDO articleDO = BlogMapStruct.INSTANCE.transArticle(articleDTO);
 
-                long snowflakeId = IdUtil.getSnowflakeId();
-                articleDO.setId(String.valueOf(snowflakeId));
+                String snowflakeId = String.valueOf(IdUtil.getSnowflakeId());
+
+                articleDO.setId(snowflakeId);
                 articleDO.setFlag("Y");
 
                 if (StringUtil.INSTANCE.isBlank(articleDO.getCategoryId())) {
