@@ -22,6 +22,7 @@
         <module>security</module>
         <module>blog</module>
         <module>word</module>
+        <module>Tool</module>
     </modules>
 
     <properties>
