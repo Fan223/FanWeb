@@ -1,5 +1,6 @@
 package fan.controller;
 
+import fan.core.util.BaseUtil;
 import fan.lang.Calculator;
 import fan.lang.Response;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,10 @@ public class ToolController {
         } catch (RuntimeException e) {
             return Response.fail(e.getMessage(), null);
         }
+    }
+
+    @PostMapping("/format")
+    public Response format(@RequestBody String json) {
+        return Response.success(BaseUtil.formatJson(json));
     }
 }
