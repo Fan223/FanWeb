@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class ToolController {
 
     @GetMapping("/calculate")
-    public Response calculate(String expression) {
+    public Response calculate(String equation) {
         try {
-            return Response.success(Calculator.calculate(expression));
+            return Response.success(Calculator.calculate(equation));
         } catch (RuntimeException e) {
             return Response.fail(e.getMessage(), null);
         }
