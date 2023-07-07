@@ -8,6 +8,7 @@ import fan.lang.*;
 import fan.pojo.dto.UserDTO;
 import fan.pojo.entity.UserDO;
 import fan.pojo.query.UserQuery;
+import fan.pojo.vo.UserVO;
 import fan.service.UserService;
 import fan.utils.SysMapStruct;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public Response insert(Insert insert) {
         try {
             UserDTO userDTO = (UserDTO) insert;
-            if (null != selectUser(userDTO.getUsername())) {
+            if (null != getUser(userDTO.getUsername()).getData()) {
                 return Response.fail("用户名已存在", null);
             }
 
@@ -70,7 +71,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private UserDO selectUser(String username) {
+    @Override
+    public Response<UserVO> getUser(String username) {
+        return Response.success("获取用户成功", SysMapStruct.INSTANCE.transUser(verifyUser(username)));
+    }
+
+    @Override
+    public UserDO verifyUser(String username) {
         return userDAO.selectOne(new LambdaQueryWrapper<UserDO>().eq(UserDO::getUsername, username));
     }
 
@@ -78,8 +85,8 @@ public class UserServiceImpl implements UserService {
     public Response update(Update update) {
         try {
             UserDTO userDTO = (UserDTO) update;
-            UserDO selectUser = selectUser(userDTO.getUsername());
-            if (null != selectUser && !selectUser.getId().equals(userDTO.getId())) {
+            UserDO user = verifyUser(userDTO.getUsername());
+            if (null != user && !user.getId().equals(userDTO.getId())) {
                 return Response.fail("用户名重复", null);
             }
 

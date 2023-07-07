@@ -3,6 +3,7 @@ package fan.controller;
 import fan.lang.Response;
 import fan.pojo.dto.UserDTO;
 import fan.pojo.query.UserQuery;
+import fan.pojo.vo.UserVO;
 import fan.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class UserController {
     @GetMapping("/pageUsers")
     public Response pageUsers(UserQuery userQuery) {
         return userService.page(userQuery);
+    }
+
+    @GetMapping("/getUser/{username}")
+    public Response<UserVO> getUser(@PathVariable("username") String username) {
+        return userService.getUser(username);
     }
 
     @PostMapping("/addUser")

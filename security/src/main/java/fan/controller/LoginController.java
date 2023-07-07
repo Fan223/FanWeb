@@ -1,8 +1,11 @@
 package fan.controller;
 
-import fan.captcha.CaptchaUtil;
+import fan.dto.LoginDTO;
 import fan.lang.Response;
+import fan.service.LoginService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 登录管理 Controller
@@ -14,8 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class LoginController {
 
+    @Resource
+    private LoginService loginService;
+
     @GetMapping("/getCaptcha")
     public Response getCaptcha() {
-        return Response.success(CaptchaUtil.getKaptcha());
+        return loginService.getCaptcha();
+    }
+
+    @PostMapping("/login")
+    public Response login(@RequestBody LoginDTO loginDTO) {
+        return loginService.login(loginDTO);
     }
 }

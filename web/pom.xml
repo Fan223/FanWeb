@@ -17,12 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>fan</groupId>
-            <artifactId>system</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>fan</groupId>
             <artifactId>blog</artifactId>
             <version>1.0</version>
         </dependency>
@@ -61,6 +55,12 @@
         <dependency>
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
+        </dependency>
+
+        <!-- nacos-discovery -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
 

@@ -12,4 +12,22 @@
     <artifactId>security</artifactId>
 
     <name>security</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>fan</groupId>
+            <artifactId>system</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- openfeign 及 loadbalancer -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+    </dependencies>
 </project>
