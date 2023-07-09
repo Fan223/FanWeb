@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,9 +38,8 @@ public class MenuServiceImpl implements MenuService {
     private MenuDAO menuDAO;
 
     @Override
-    public Response list(Query query) {
+    public Response<Map<String, List<MenuVO>>> listMenus(MenuQuery menuQuery) {
         try {
-            MenuQuery menuQuery = (MenuQuery) query;
             LambdaQueryWrapper<MenuDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(menuQuery.getFlag()), MenuDO::getFlag, menuQuery.getFlag())
@@ -50,22 +50,22 @@ public class MenuServiceImpl implements MenuService {
             List<MenuVO> menuVos = SysMapStruct.INSTANCE.transMenu(menuDAO.selectList(queryWrapper));
             List<MenuVO> topMenuVos = menuVos.stream().filter(menuVO -> "top".equals(menuVO.getPosition())).map(MenuVO::new).collect(Collectors.toList());
 
-            return Response.success(MapUtil.builder().put("top", SysUtil.buildTree(topMenuVos))
+            return Response.success(MapUtil.builder("top", SysUtil.buildTree(topMenuVos))
                     .put("all", SysUtil.buildTree(menuVos)).build());
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询菜单出现异常!");
+            return Response.fail("查询菜单出现异常!", null);
         }
     }
 
     @Override
-    public Response listChildMenus(String id) {
+    public Response<List<MenuVO>> listChildMenus(String id) {
         try {
             List<MenuDO> childMenus = menuDAO.listChildMenus(id);
             return Response.success(SysUtil.buildTree(SysMapStruct.INSTANCE.transMenu(childMenus)));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询侧栏菜单出现异常!");
+            return Response.fail("查询侧栏菜单出现异常!", null);
         }
     }
 
@@ -83,9 +83,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addMenu(MenuDTO menuDTO) {
         try {
-            MenuDO menuDO = SysMapStruct.INSTANCE.transMenu((MenuDTO) insert);
+            MenuDO menuDO = SysMapStruct.INSTANCE.transMenu(menuDTO);
 
             menuDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
@@ -95,29 +95,29 @@ public class MenuServiceImpl implements MenuService {
             return Response.success(menuDAO.insert(menuDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增菜单出现异常!");
+            return Response.fail("新增菜单出现异常!", null);
         }
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateMenu(MenuDTO menuDTO) {
         try {
-            MenuDO menuDO = SysMapStruct.INSTANCE.transMenu((MenuDTO) update);
+            MenuDO menuDO = SysMapStruct.INSTANCE.transMenu(menuDTO);
             menuDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             return Response.success(menuDAO.updateById(menuDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新菜单出现异常!");
+            return Response.fail("更新菜单出现异常!", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteMenu(List<String> ids) {
         try {
             return Response.success(menuDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除菜单出现异常!");
+            return Response.fail("删除菜单出现异常!", null);
         }
     }
 }

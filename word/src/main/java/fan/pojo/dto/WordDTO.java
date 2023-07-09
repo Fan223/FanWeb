@@ -1,7 +1,5 @@
 package fan.pojo.dto;
 
-import fan.lang.Insert;
-import fan.lang.Update;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * @since 2023/6/9 16:30
  */
 @Data
-public class WordDTO implements Insert, Update {
+public class WordDTO {
 
     private String id;
 

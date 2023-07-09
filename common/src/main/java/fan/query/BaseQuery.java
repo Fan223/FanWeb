@@ -1,14 +1,12 @@
 package fan.query;
 
-import fan.lang.Query;
-
 /**
  * 基础查询参数
  *
  * @author Fan
  * @since 2023/6/9 14:41
  */
-public class BaseQuery implements Query {
+public class BaseQuery {
 
     private int currentPage;
 

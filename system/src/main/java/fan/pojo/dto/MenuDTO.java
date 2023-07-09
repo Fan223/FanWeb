@@ -1,7 +1,5 @@
 package fan.pojo.dto;
 
-import fan.lang.Insert;
-import fan.lang.Update;
 import lombok.Data;
 
 /**
@@ -11,7 +9,7 @@ import lombok.Data;
  * @since 2023/6/9 11:17
  */
 @Data
-public class MenuDTO implements Insert, Update {
+public class MenuDTO {
 
     private String id;
 

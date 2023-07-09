@@ -8,6 +8,7 @@ import fan.lang.*;
 import fan.pojo.dto.CategoryDTO;
 import fan.pojo.entity.CategoryDO;
 import fan.pojo.query.CategoryQuery;
+import fan.pojo.vo.CategoryVO;
 import fan.service.CategoryService;
 import fan.utils.BlogMapStruct;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDAO categoryDAO;
 
     @Override
-    public Response page(Query query) {
+    public Response<Page<CategoryVO>> pageCategories(CategoryQuery categoryQuery) {
         try {
-            CategoryQuery categoryQuery = (CategoryQuery) query;
             LambdaQueryWrapper<CategoryDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(categoryQuery.getFlag()), CategoryDO::getFlag, categoryQuery.getFlag())
@@ -45,14 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
             return Response.success(BlogMapStruct.INSTANCE.transCategory(page));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询分类出现异常");
+            return Response.fail("查询分类出现异常", null);
         }
     }
 
     @Override
-    public Response list(Query query) {
+    public Response<List<CategoryVO>> listCategories(CategoryQuery categoryQuery) {
         try {
-            CategoryQuery categoryQuery = (CategoryQuery) query;
             LambdaQueryWrapper<CategoryDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(CategoryDO::getFlag, categoryQuery.getFlag())
@@ -60,14 +59,14 @@ public class CategoryServiceImpl implements CategoryService {
             return Response.success(BlogMapStruct.INSTANCE.transCategory(categoryDAO.selectList(queryWrapper)));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询分类出现异常");
+            return Response.fail("查询分类出现异常", null);
         }
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addCategory(CategoryDTO categoryDTO) {
         try {
-            CategoryDO categoryDO = BlogMapStruct.INSTANCE.transCategory((CategoryDTO) insert);
+            CategoryDO categoryDO = BlogMapStruct.INSTANCE.transCategory(categoryDTO);
 
             categoryDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -77,30 +76,30 @@ public class CategoryServiceImpl implements CategoryService {
             return Response.success(categoryDAO.insert(categoryDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增分类出现异常");
+            return Response.fail("新增分类出现异常", null);
         }
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateCategory(CategoryDTO categoryDTO) {
         try {
-            CategoryDO categoryDO = BlogMapStruct.INSTANCE.transCategory((CategoryDTO) update);
+            CategoryDO categoryDO = BlogMapStruct.INSTANCE.transCategory(categoryDTO);
 
             categoryDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             return Response.success(categoryDAO.updateById(categoryDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新分类出现异常");
+            return Response.fail("更新分类出现异常", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteCategory(List<String> ids) {
         try {
             return Response.success(categoryDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除分类出现异常");
+            return Response.fail("删除分类出现异常", null);
         }
     }
 }

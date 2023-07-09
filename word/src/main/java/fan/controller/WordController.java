@@ -1,8 +1,10 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.WordDTO;
 import fan.pojo.query.WordQuery;
+import fan.pojo.vo.WordVO;
 import fan.service.WordService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,27 +25,27 @@ public class WordController {
     private WordService wordService;
 
     @GetMapping("/pageWords")
-    public Response pageWords(WordQuery wordQuery) {
-        return wordService.page(wordQuery);
+    public Response<Page<WordVO>> pageWords(WordQuery wordQuery) {
+        return wordService.pageWords(wordQuery);
     }
 
     @GetMapping("/listWords/{en}")
-    public Response listWords(@PathVariable("en") String en) {
-        return wordService.list(WordQuery.builder().en(en).build());
+    public Response<List<WordVO>> listWords(@PathVariable("en") String en) {
+        return wordService.listWords(WordQuery.builder().en(en).build());
     }
 
     @PostMapping("/addWord")
-    public Response addWord(@RequestBody WordDTO wordDTO) {
-        return wordService.insert(wordDTO);
+    public Response<Integer> addWord(@RequestBody WordDTO wordDTO) {
+        return wordService.addWord(wordDTO);
     }
 
     @PutMapping("/updateWord")
-    public Response updateWord(@RequestBody WordDTO wordDTO) {
-        return wordService.update(wordDTO);
+    public Response<Integer> updateWord(@RequestBody WordDTO wordDTO) {
+        return wordService.updateWord(wordDTO);
     }
 
     @DeleteMapping("/deleteWord/{id}")
-    public Response deleteWord(@PathVariable("id") List<String> ids) {
-        return wordService.delete(ids);
+    public Response<Integer> deleteWord(@PathVariable("id") List<String> ids) {
+        return wordService.deleteWord(ids);
     }
 }

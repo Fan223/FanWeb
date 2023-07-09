@@ -1,8 +1,10 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.RoleDTO;
 import fan.pojo.query.RoleQuery;
+import fan.pojo.vo.RoleVO;
 import fan.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +25,22 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping("/pageRoles")
-    public Response pageRoles(RoleQuery roleQuery) {
-        return roleService.page(roleQuery);
+    public Response<Page<RoleVO>> pageRoles(RoleQuery roleQuery) {
+        return roleService.pageRoles(roleQuery);
     }
 
     @PostMapping("/addRole")
-    public Response addRole(@RequestBody RoleDTO roleDTO) {
-        return roleService.insert(roleDTO);
+    public Response<Integer> addRole(@RequestBody RoleDTO roleDTO) {
+        return roleService.addRole(roleDTO);
     }
 
     @PutMapping("/updateRole")
-    public Response updateRole(@RequestBody RoleDTO roleDTO) {
-        return roleService.update(roleDTO);
+    public Response<Integer> updateRole(@RequestBody RoleDTO roleDTO) {
+        return roleService.updateRole(roleDTO);
     }
 
     @DeleteMapping("/deleteRole/{id}")
-    public Response deleteRole(@PathVariable("id") List<String> ids) {
-        return roleService.delete(ids);
+    public Response<Integer> deleteRole(@PathVariable("id") List<String> ids) {
+        return roleService.deleteRole(ids);
     }
 }

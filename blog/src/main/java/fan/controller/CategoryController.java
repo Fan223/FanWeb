@@ -1,8 +1,10 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.CategoryDTO;
 import fan.pojo.query.CategoryQuery;
+import fan.pojo.vo.CategoryVO;
 import fan.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,27 +25,27 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/pageCategories")
-    public Response pageCategories(CategoryQuery categoryQuery) {
-        return categoryService.page(categoryQuery);
+    public Response<Page<CategoryVO>> pageCategories(CategoryQuery categoryQuery) {
+        return categoryService.pageCategories(categoryQuery);
     }
 
     @GetMapping("/listCategories")
-    public Response listCategories() {
-        return categoryService.list(CategoryQuery.builder().flag("Y").build());
+    public Response<List<CategoryVO>> listCategories() {
+        return categoryService.listCategories(CategoryQuery.builder().flag("Y").build());
     }
 
     @PostMapping("/addCategory")
-    public Response addCategory(@RequestBody CategoryDTO categoryDTO) {
-        return categoryService.insert(categoryDTO);
+    public Response<Integer> addCategory(@RequestBody CategoryDTO categoryDTO) {
+        return categoryService.addCategory(categoryDTO);
     }
 
     @PutMapping("/updateCategory")
-    public Response updateCategory(@RequestBody CategoryDTO categoryDTO) {
-        return categoryService.update(categoryDTO);
+    public Response<Integer> updateCategory(@RequestBody CategoryDTO categoryDTO) {
+        return categoryService.updateCategory(categoryDTO);
     }
 
     @DeleteMapping("/deleteCategory/{id}")
-    public Response deleteCategory(@PathVariable("id") List<String> ids) {
-        return categoryService.delete(ids);
+    public Response<Integer> deleteCategory(@PathVariable("id") List<String> ids) {
+        return categoryService.deleteCategory(ids);
     }
 }

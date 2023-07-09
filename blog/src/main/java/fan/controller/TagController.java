@@ -1,8 +1,10 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.TagDTO;
 import fan.pojo.query.TagQuery;
+import fan.pojo.vo.TagVO;
 import fan.service.TagService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +25,22 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping("/pageTags")
-    public Response pageTags(TagQuery tagQuery) {
-        return tagService.page(tagQuery);
+    public Response<Page<TagVO>> pageTags(TagQuery tagQuery) {
+        return tagService.pageTags(tagQuery);
     }
 
     @PostMapping("/addTag")
-    public Response addTag(@RequestBody TagDTO tagDTO) {
-        return tagService.insert(tagDTO);
+    public Response<Integer> addTag(@RequestBody TagDTO tagDTO) {
+        return tagService.addTag(tagDTO);
     }
 
     @PutMapping("/updateTag")
-    public Response updateTag(@RequestBody TagDTO tagDTO) {
-        return tagService.update(tagDTO);
+    public Response<Integer> updateTag(@RequestBody TagDTO tagDTO) {
+        return tagService.updateTag(tagDTO);
     }
 
     @DeleteMapping("/deleteTag/{id}")
-    public Response deleteTag(@PathVariable("id") List<String> ids) {
-        return tagService.delete(ids);
+    public Response<Integer> deleteTag(@PathVariable("id") List<String> ids) {
+        return tagService.deleteTag(ids);
     }
 }

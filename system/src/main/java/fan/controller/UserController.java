@@ -1,5 +1,6 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.UserDTO;
 import fan.pojo.query.UserQuery;
@@ -24,8 +25,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/pageUsers")
-    public Response pageUsers(UserQuery userQuery) {
-        return userService.page(userQuery);
+    public Response<Page<UserVO>> pageUsers(UserQuery userQuery) {
+        return userService.pageUsers(userQuery);
     }
 
     @GetMapping("/getUser/{username}")
@@ -34,17 +35,17 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public Response addUser(@RequestBody UserDTO userDTO) {
-        return userService.insert(userDTO);
+    public Response<Integer> addUser(@RequestBody UserDTO userDTO) {
+        return userService.addUser(userDTO);
     }
 
     @PutMapping("/updateUser")
-    public Response updateUser(@RequestBody UserDTO userDTO) {
-        return userService.update(userDTO);
+    public Response<Integer> updateUser(@RequestBody UserDTO userDTO) {
+        return userService.updateUser(userDTO);
     }
 
     @DeleteMapping("/deleteUser/{id}")
-    public Response deleteUser(@PathVariable("id") List<String> ids) {
-        return userService.delete(ids);
+    public Response<Integer> deleteUser(@PathVariable("id") List<String> ids) {
+        return userService.deleteUser(ids);
     }
 }

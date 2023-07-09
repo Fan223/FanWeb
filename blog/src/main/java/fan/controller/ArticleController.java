@@ -1,8 +1,10 @@
 package fan.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.lang.Response;
 import fan.pojo.dto.ArticleDTO;
 import fan.pojo.query.ArticleQuery;
+import fan.pojo.vo.ArticleVO;
 import fan.service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +25,22 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/pageArticles")
-    public Response pageArticles(ArticleQuery articleQuery) {
-        return articleService.page(articleQuery);
+    public Response<Page<ArticleVO>> pageArticles(ArticleQuery articleQuery) {
+        return articleService.pageArticles(articleQuery);
     }
 
     @GetMapping("/getArticle/{id}")
-    public Response getArticle(@PathVariable("id") String id) {
-        return articleService.get(id);
+    public Response<ArticleVO> getArticle(@PathVariable("id") String id) {
+        return articleService.getArticle(id);
     }
 
     @PostMapping("/saveArticle")
-    public Response saveArticle(@RequestBody ArticleDTO articleDTO) {
-        return articleService.insert(articleDTO);
+    public Response<String> saveArticle(@RequestBody ArticleDTO articleDTO) {
+        return articleService.saveArticle(articleDTO);
     }
 
     @DeleteMapping("/deleteArticle/{id}")
-    public Response deleteArticle(@PathVariable("id") List<String> ids) {
-        return articleService.delete(ids);
+    public Response<Integer> deleteArticle(@PathVariable("id") List<String> ids) {
+        return articleService.deleteArticle(ids);
     }
 }

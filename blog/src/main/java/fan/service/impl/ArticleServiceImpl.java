@@ -33,9 +33,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDAO articleDAO;
 
     @Override
-    public Response page(Query query) {
+    public Response<Page<ArticleVO>> pageArticles(ArticleQuery articleQuery) {
         try {
-            ArticleQuery articleQuery = (ArticleQuery) query;
             LambdaQueryWrapper<ArticleDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(articleQuery.getCategoryId()), ArticleDO::getCategoryId, articleQuery.getCategoryId())
@@ -47,12 +46,12 @@ public class ArticleServiceImpl implements ArticleService {
             return Response.success(BlogMapStruct.INSTANCE.transArticle(page));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询文章出现异常!");
+            return Response.fail("查询文章出现异常!", null);
         }
     }
 
     @Override
-    public Response get(String id) {
+    public Response<ArticleVO> getArticle(String id) {
         try {
             ArticleDO articleDO = articleDAO.selectOne(new LambdaQueryWrapper<ArticleDO>().eq(ArticleDO::getId, id));
             ArticleVO articleVO = BlogMapStruct.INSTANCE.transArticle(articleDO);
@@ -60,15 +59,13 @@ public class ArticleServiceImpl implements ArticleService {
             return Response.success(articleVO);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("获取文章出现异常!");
+            return Response.fail("获取文章出现异常!", null);
         }
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<String> saveArticle(ArticleDTO articleDTO) {
         try {
-            ArticleDTO articleDTO = (ArticleDTO) insert;
-
             if (StringUtil.INSTANCE.isBlank(articleDTO.getId())) {
                 ArticleDO articleDO = BlogMapStruct.INSTANCE.transArticle(articleDTO);
 
@@ -89,28 +86,27 @@ public class ArticleServiceImpl implements ArticleService {
                 return Response.success(snowflakeId);
             }
 
-            return update(articleDTO);
+            return updateArticle(articleDTO);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("保存文章出现异常!");
+            return Response.fail("保存文章出现异常!", null);
         }
     }
 
-    @Override
-    public Response update(Update update) {
-        ArticleDO articleDO = BlogMapStruct.INSTANCE.transArticle((ArticleDTO) update);
+    private Response<String> updateArticle(ArticleDTO articleDTO) {
+        ArticleDO articleDO = BlogMapStruct.INSTANCE.transArticle(articleDTO);
         articleDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         articleDAO.updateById(articleDO);
         return Response.success(articleDO.getId());
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteArticle(List<String> ids) {
         try {
             return Response.success(articleDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除文章出现异常!");
+            return Response.fail("删除文章出现异常!", null);
         }
     }
 }

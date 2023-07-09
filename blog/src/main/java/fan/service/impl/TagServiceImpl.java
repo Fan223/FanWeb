@@ -8,6 +8,7 @@ import fan.lang.*;
 import fan.pojo.dto.TagDTO;
 import fan.pojo.entity.TagDO;
 import fan.pojo.query.TagQuery;
+import fan.pojo.vo.TagVO;
 import fan.service.TagService;
 import fan.utils.BlogMapStruct;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +33,8 @@ public class TagServiceImpl implements TagService {
     private TagDAO tagDAO;
 
     @Override
-    public Response page(Query query) {
+    public Response<Page<TagVO>> pageTags(TagQuery tagQuery) {
         try {
-            TagQuery tagQuery = (TagQuery) query;
             LambdaQueryWrapper<TagDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(tagQuery.getFlag()), TagDO::getFlag, tagQuery.getFlag())
@@ -44,14 +44,14 @@ public class TagServiceImpl implements TagService {
             return Response.success(BlogMapStruct.INSTANCE.transTag(page));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询标签出现异常");
+            return Response.fail("查询标签出现异常", null);
         }
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addTag(TagDTO tagDTO) {
         try {
-            TagDO tagDO = BlogMapStruct.INSTANCE.transTag((TagDTO) insert);
+            TagDO tagDO = BlogMapStruct.INSTANCE.transTag(tagDTO);
 
             tagDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -61,30 +61,30 @@ public class TagServiceImpl implements TagService {
             return Response.success(tagDAO.insert(tagDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增标签出现异常");
+            return Response.fail("新增标签出现异常", null);
         }
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateTag(TagDTO tagDTO) {
         try {
-            TagDO tagDO = BlogMapStruct.INSTANCE.transTag((TagDTO) update);
+            TagDO tagDO = BlogMapStruct.INSTANCE.transTag(tagDTO);
 
             tagDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             return Response.success(tagDAO.updateById(tagDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新标签出现异常");
+            return Response.fail("更新标签出现异常", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteTag(List<String> ids) {
         try {
             return Response.success(tagDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除标签出现异常");
+            return Response.fail("删除标签出现异常", null);
         }
     }
 }

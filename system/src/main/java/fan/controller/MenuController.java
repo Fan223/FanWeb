@@ -4,11 +4,13 @@ import fan.core.util.ListUtil;
 import fan.lang.Response;
 import fan.pojo.dto.MenuDTO;
 import fan.pojo.query.MenuQuery;
+import fan.pojo.vo.MenuVO;
 import fan.service.MenuService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单管理 Controller
@@ -24,14 +26,14 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping("/listNavMenus")
-    public Response listNavMenus(MenuQuery menuQuery) {
+    public Response<Map<String, List<MenuVO>>> listNavMenus(MenuQuery menuQuery) {
         menuQuery.setFlag("Y");
         menuQuery.setType(ListUtil.list(1, 2, 4));
-        return menuService.list(menuQuery);
+        return menuService.listMenus(menuQuery);
     }
 
     @GetMapping("/listChildMenus/{id}")
-    public Response listChildMenus(@PathVariable("id") String id) {
+    public Response<List<MenuVO>> listChildMenus(@PathVariable("id") String id) {
         return menuService.listChildMenus(id);
     }
 
@@ -41,22 +43,22 @@ public class MenuController {
     }
 
     @GetMapping("/listMenus")
-    public Response listMenus(MenuQuery menuQuery) {
-        return menuService.list(menuQuery);
+    public Response<Map<String, List<MenuVO>>> listMenus(MenuQuery menuQuery) {
+        return menuService.listMenus(menuQuery);
     }
 
     @PostMapping("/addMenu")
-    public Response addMenu(@RequestBody MenuDTO menuDTO) {
-        return menuService.insert(menuDTO);
+    public Response<Integer> addMenu(@RequestBody MenuDTO menuDTO) {
+        return menuService.addMenu(menuDTO);
     }
 
     @PutMapping("/updateMenu")
-    public Response updateMenu(@RequestBody MenuDTO menuDTO) {
-        return menuService.update(menuDTO);
+    public Response<Integer> updateMenu(@RequestBody MenuDTO menuDTO) {
+        return menuService.updateMenu(menuDTO);
     }
 
     @DeleteMapping("/deleteMenu/{id}")
-    public Response deleteMenu(@PathVariable("id") List<String> ids) {
-        return menuService.delete(ids);
+    public Response<Integer> deleteMenu(@PathVariable("id") List<String> ids) {
+        return menuService.deleteMenu(ids);
     }
 }

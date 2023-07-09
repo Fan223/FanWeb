@@ -1,7 +1,5 @@
 package fan.pojo.dto;
 
-import fan.lang.Insert;
-import fan.lang.Update;
 import lombok.Data;
 
 /**
@@ -11,7 +9,7 @@ import lombok.Data;
  * @since 2023/6/21 13:54
  */
 @Data
-public class TagDTO implements Insert, Update {
+public class TagDTO {
 
     private String id;
 

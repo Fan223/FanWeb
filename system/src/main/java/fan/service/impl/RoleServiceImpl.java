@@ -10,6 +10,7 @@ import fan.pojo.dto.RoleDTO;
 import fan.pojo.entity.MenuDO;
 import fan.pojo.entity.RoleDO;
 import fan.pojo.query.RoleQuery;
+import fan.pojo.vo.RoleVO;
 import fan.service.RoleService;
 import fan.utils.SysMapStruct;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +35,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleDAO roleDAO;
 
     @Override
-    public Response page(Query query) {
-        RoleQuery roleQuery = (RoleQuery) query;
+    public Response<Page<RoleVO>> pageRoles(RoleQuery roleQuery) {
         LambdaQueryWrapper<RoleDO> queryWrapper = new LambdaQueryWrapper<>();
 
         queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(roleQuery.getFlag()), RoleDO::getFlag, roleQuery.getFlag())
@@ -46,9 +46,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addRole(RoleDTO roleDTO) {
         try {
-            RoleDO roleDO = SysMapStruct.INSTANCE.transRole((RoleDTO) insert);
+            RoleDO roleDO = SysMapStruct.INSTANCE.transRole(roleDTO);
 
             roleDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
@@ -58,29 +58,29 @@ public class RoleServiceImpl implements RoleService {
             return Response.success(roleDAO.insert(roleDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增角色出现异常!");
+            return Response.fail("新增角色出现异常!", null);
         }
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateRole(RoleDTO roleDTO) {
         try {
-            RoleDO roleDO = SysMapStruct.INSTANCE.transRole((RoleDTO) update);
+            RoleDO roleDO = SysMapStruct.INSTANCE.transRole(roleDTO);
             roleDO.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             return Response.success(roleDAO.updateById(roleDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新角色出现异常!");
+            return Response.fail("更新角色出现异常!", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteRole(List<String> ids) {
         try {
             return Response.success(roleDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除角色出现异常!");
+            return Response.fail("删除角色出现异常!", null);
         }
     }
 }

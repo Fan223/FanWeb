@@ -9,6 +9,7 @@ import fan.lang.*;
 import fan.pojo.dto.WordDTO;
 import fan.pojo.entity.WordDO;
 import fan.pojo.query.WordQuery;
+import fan.pojo.vo.WordVO;
 import fan.service.WordService;
 import fan.utils.WordMapStruct;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,8 @@ public class WordServiceImpl implements WordService {
     private WordDAO wordDAO;
 
     @Override
-    public Response page(Query query) {
+    public Response<Page<WordVO>> pageWords(WordQuery wordQuery) {
         try {
-            WordQuery wordQuery = (WordQuery) query;
             LambdaQueryWrapper<WordDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(wordQuery.getEn()), WordDO::getEn, wordQuery.getEn())
@@ -46,14 +46,13 @@ public class WordServiceImpl implements WordService {
             return Response.success(WordMapStruct.INSTANCE.transWord(page));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询单词出现异常!");
+            return Response.fail("查询单词出现异常!", null);
         }
     }
 
     @Override
-    public Response list(Query query) {
+    public Response<List<WordVO>> listWords(WordQuery wordQuery) {
         try {
-            WordQuery wordQuery = (WordQuery) query;
             LambdaQueryWrapper<WordDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.like(WordDO::getEn, wordQuery.getEn())
@@ -61,14 +60,14 @@ public class WordServiceImpl implements WordService {
             return Response.success(WordMapStruct.INSTANCE.transWord(wordDAO.selectList(queryWrapper)));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询单词出现异常!");
+            return Response.fail("查询单词出现异常!", null);
         }
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addWord(WordDTO wordDTO) {
         try {
-            WordDO wordDO = WordMapStruct.INSTANCE.transWord((WordDTO) insert);
+            WordDO wordDO = WordMapStruct.INSTANCE.transWord(wordDTO);
 
             wordDO.setId(String.valueOf(IdUtil.getSnowflakeId()));
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -78,29 +77,29 @@ public class WordServiceImpl implements WordService {
             return Response.success(wordDAO.insert(wordDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增单词出现异常!");
+            return Response.fail("新增单词出现异常!", null);
         }
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateWord(WordDTO wordDTO) {
         try {
-            WordDO wordDO = WordMapStruct.INSTANCE.transWord((WordDTO) update);
+            WordDO wordDO = WordMapStruct.INSTANCE.transWord(wordDTO);
             wordDO.setUpdateTime(new Timestamp(System.currentTimeMillis()));
             return Response.success(wordDAO.updateById(wordDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新单词出现异常!");
+            return Response.fail("更新单词出现异常!", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteWord(List<String> ids) {
         try {
             return Response.success(wordDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除单词出现异常!");
+            return Response.fail("删除单词出现异常!", null);
         }
     }
 }

@@ -33,9 +33,8 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
     @Override
-    public Response page(Query query) {
+    public Response<Page<UserVO>> pageUsers(UserQuery userQuery) {
         try {
-            UserQuery userQuery = (UserQuery) query;
             LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
 
             queryWrapper.eq(StringUtil.INSTANCE.isNotBlank(userQuery.getFlag()), UserDO::getFlag, userQuery.getFlag())
@@ -45,14 +44,13 @@ public class UserServiceImpl implements UserService {
             return Response.success(SysMapStruct.INSTANCE.transUser(page));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询用户出现异常!");
+            return Response.fail("查询用户出现异常!", null);
         }
     }
 
     @Override
-    public Response insert(Insert insert) {
+    public Response<Integer> addUser(UserDTO userDTO) {
         try {
-            UserDTO userDTO = (UserDTO) insert;
             if (null != getUser(userDTO.getUsername()).getData()) {
                 return Response.fail("用户名已存在", null);
             }
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService {
             return Response.success(userDAO.insert(userDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("新增用户出现异常!");
+            return Response.fail("新增用户出现异常!", null);
         }
     }
 
@@ -82,9 +80,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response update(Update update) {
+    public Response<Integer> updateUser(UserDTO userDTO) {
         try {
-            UserDTO userDTO = (UserDTO) update;
             UserDO user = verifyUser(userDTO.getUsername());
             if (null != user && !user.getId().equals(userDTO.getId())) {
                 return Response.fail("用户名重复", null);
@@ -95,17 +92,17 @@ public class UserServiceImpl implements UserService {
             return Response.success(userDAO.updateById(userDO));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("更新用户出现异常!");
+            return Response.fail("更新用户出现异常!", null);
         }
     }
 
     @Override
-    public Response delete(List<String> ids) {
+    public Response<Integer> deleteUser(List<String> ids) {
         try {
             return Response.success(userDAO.deleteBatchIds(ids));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("删除用户出现异常!");
+            return Response.fail("删除用户出现异常!", null);
         }
     }
 }
