@@ -17,8 +17,24 @@ import java.util.List;
  */
 public interface UserService {
 
+    /**
+     * 分页获取用户
+     *
+     * @param userQuery 用户更新参数
+     * @return {@link Response<Page<UserVO>>}
+     * @author Fan
+     * @since 2023/7/10 14:23
+     */
     Response<Page<UserVO>> pageUsers(UserQuery userQuery);
 
+    /**
+     * 添加用户
+     *
+     * @param userDTO 用户更新参数
+     * @return {@link Response<Integer>}
+     * @author Fan
+     * @since 2023/7/10 14:23
+     */
     Response<Integer> addUser(UserDTO userDTO);
 
     /**
@@ -41,7 +57,23 @@ public interface UserService {
      */
     UserDO verifyUser(String username);
 
+    /**
+     * 修改用户
+     *
+     * @param userDTO 用户更新参数
+     * @return {@link Response<Integer>}
+     * @author Fan
+     * @since 2023/7/10 14:24
+     */
     Response<Integer> updateUser(UserDTO userDTO);
 
+    /**
+     * 删除用户
+     *
+     * @param ids ID列表
+     * @return {@link Response<Integer>}
+     * @author Fan
+     * @since 2023/7/10 14:24
+     */
     Response<Integer> deleteUser(List<String> ids);
 }

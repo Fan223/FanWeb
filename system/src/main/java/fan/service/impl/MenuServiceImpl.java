@@ -70,14 +70,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Response listTopChildMenus(String id) {
+    public Response<Map> listTopChildMenus(String id) {
         try {
             String topMenuId = menuDAO.getTopParentMenu(id);
             List<MenuVO> childMenus = ListUtil.castToList(MenuVO.class, listChildMenus(topMenuId).getData());
             return Response.success(MapUtil.builder().put("topMenuId", topMenuId).put("childMenus", childMenus).build());
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            return Response.fail("查询顶层父菜单的子菜单出现异常!");
+            return Response.fail("查询顶层父菜单的子菜单出现异常!", null);
         }
 
     }

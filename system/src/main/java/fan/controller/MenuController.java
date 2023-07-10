@@ -38,7 +38,7 @@ public class MenuController {
     }
 
     @GetMapping("/listTopChildMenus/{id}")
-    public Response listTopChildMenus(@PathVariable("id") String id) {
+    public Response<Map> listTopChildMenus(@PathVariable("id") String id) {
         return menuService.listTopChildMenus(id);
     }
 

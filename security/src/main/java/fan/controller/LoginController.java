@@ -2,10 +2,12 @@ package fan.controller;
 
 import fan.dto.LoginDTO;
 import fan.lang.Response;
+import fan.pojo.vo.UserVO;
 import fan.service.LoginService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 登录管理 Controller
@@ -21,12 +23,12 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/getCaptcha")
-    public Response getCaptcha() {
+    public Response<Map<String, String>> getCaptcha() {
         return loginService.getCaptcha();
     }
 
     @PostMapping("/login")
-    public Response login(@RequestBody LoginDTO loginDTO) {
+    public Response<UserVO> login(@RequestBody LoginDTO loginDTO) {
         return loginService.login(loginDTO);
     }
 }

@@ -2,6 +2,9 @@ package fan.service;
 
 import fan.dto.LoginDTO;
 import fan.lang.Response;
+import fan.pojo.vo.UserVO;
+
+import java.util.Map;
 
 /**
  * 登录接口
@@ -18,7 +21,7 @@ public interface LoginService {
      * @author Fan
      * @since 2023/7/7 15:20
      */
-    Response getCaptcha();
+    Response<Map<String, String>> getCaptcha();
 
     /**
      * 登录校验
@@ -28,5 +31,5 @@ public interface LoginService {
      * @author Fan
      * @since 2023/7/7 15:17
      */
-    Response login(LoginDTO loginDTO);
+    Response<UserVO> login(LoginDTO loginDTO);
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ToolController {
 
     @GetMapping("/calculate")
-    public Response calculate(String equation) {
+    public Response<Double> calculate(String equation) {
         try {
             return Response.success(Calculator.calculate(equation));
         } catch (RuntimeException e) {
@@ -25,7 +25,7 @@ public class ToolController {
     }
 
     @PostMapping("/format")
-    public Response format(@RequestBody String json) {
+    public Response<String> format(@RequestBody String json) {
         return Response.success(BaseUtil.formatJson(json));
     }
 }

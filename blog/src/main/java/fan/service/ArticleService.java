@@ -20,7 +20,7 @@ public interface ArticleService {
      * 分页获取文章
      *
      * @param articleQuery 文章查询参数
-     * @return {@link Response}
+     * @return {@link Response<Page<ArticleVO>>}
      * @author Fan
      * @since 2023/7/8 1:54
      */
@@ -31,7 +31,7 @@ public interface ArticleService {
      * 获取文章
      *
      * @param id ID
-     * @return {@link Response}
+     * @return {@link Response<ArticleVO>}
      * @author Fan
      * @since 2023/7/8 1:55
      */
@@ -42,7 +42,7 @@ public interface ArticleService {
      * 保存文章
      *
      * @param articleDTO 文章更新参数
-     * @return {@link Response}
+     * @return {@link Response<String>}
      * @author Fan
      * @since 2023/7/8 1:56
      */
@@ -52,7 +52,7 @@ public interface ArticleService {
      * 删除文章
      *
      * @param ids ID列表
-     * @return {@link Response}
+     * @return {@link Response<Integer>}
      * @author Fan
      * @since 2023/7/8 2:00
      */
