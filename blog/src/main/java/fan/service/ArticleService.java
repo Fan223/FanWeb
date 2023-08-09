@@ -28,6 +28,16 @@ public interface ArticleService {
     Response<Page<ArticleVO>> pageArticles(ArticleQuery articleQuery);
 
     /**
+     * 获取文章列表
+     *
+     * @param articleQuery 文章查询参数
+     * @return {@link Response<List<ArticleVO>>}
+     * @author Fan
+     * @since 2023/8/9 16:32
+     */
+    Response<List<ArticleVO>> listArticles(ArticleQuery articleQuery);
+
+    /**
      * 获取文章
      *
      * @param id ID

@@ -36,7 +36,6 @@ public interface BlogMapStruct {
      * @since 2023/6/9 15:27
      */
     @Mapping(target = "createTime", source = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Mapping(target = "content", ignore = true)
     ArticleVO transArticle(ArticleDO articleDO);
 
     /**

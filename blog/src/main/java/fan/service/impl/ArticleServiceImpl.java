@@ -1,6 +1,7 @@
 package fan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fan.core.util.IdUtil;
 import fan.dao.ArticleDAO;
@@ -51,11 +52,21 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Response<List<ArticleVO>> listArticles(ArticleQuery articleQuery) {
+        try {
+            List<ArticleDO> articleDos = articleDAO.selectList(new QueryWrapper<>());
+            return Response.success(BlogMapStruct.INSTANCE.transArticle(articleDos));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.fail("查询文章列表出现异常!", null);
+        }
+    }
+
+    @Override
     public Response<ArticleVO> getArticle(String id) {
         try {
             ArticleDO articleDO = articleDAO.selectOne(new LambdaQueryWrapper<ArticleDO>().eq(ArticleDO::getId, id));
             ArticleVO articleVO = BlogMapStruct.INSTANCE.transArticle(articleDO);
-            articleVO.setContent(articleDO.getContent());
             return Response.success(articleVO);
         } catch (RuntimeException e) {
             log.error(e.getMessage());

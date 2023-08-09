@@ -6,6 +6,7 @@ import fan.pojo.dto.ArticleDTO;
 import fan.pojo.query.ArticleQuery;
 import fan.pojo.vo.ArticleVO;
 import fan.service.ArticleService;
+import fan.utils.BlogUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -42,5 +43,11 @@ public class ArticleController {
     @DeleteMapping("/deleteArticle/{id}")
     public Response<Integer> deleteArticle(@PathVariable("id") List<String> ids) {
         return articleService.deleteArticle(ids);
+    }
+
+    @GetMapping("/cleanInvalidImage")
+    public Response<Integer> cleanInvalidImage() {
+        Response<List<ArticleVO>> articles = articleService.listArticles(ArticleQuery.builder().build());
+        return Response.success("清除失效的照片成功", BlogUtil.cleanInvalidImage(articles.getData()));
     }
 }
