@@ -64,6 +64,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Response<CategoryVO> getCategory(String id) {
+        LambdaQueryWrapper<CategoryDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(CategoryDO::getId, id);
+        return Response.success(BlogMapStruct.INSTANCE.transCategory(categoryDAO.selectOne(queryWrapper)));
+    }
+
+    @Override
     public Response<Integer> addCategory(CategoryDTO categoryDTO) {
         try {
             CategoryDO categoryDO = BlogMapStruct.INSTANCE.transCategory(categoryDTO);

@@ -37,6 +37,16 @@ public interface CategoryService {
     Response<List<CategoryVO>> listCategories(CategoryQuery categoryQuery);
 
     /**
+     * 获取分类
+     *
+     * @param id ID
+     * @return {@link Response<CategoryVO>}
+     * @author Fan
+     * @since 2023/8/10 9:12
+     */
+    Response<CategoryVO> getCategory(String id);
+
+    /**
      * 添加分类
      *
      * @param categoryDTO 分类更新参数

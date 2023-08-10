@@ -16,6 +16,8 @@ import lombok.EqualsAndHashCode;
 @Builder
 public class CategoryQuery extends BaseQuery {
 
+    private String id;
+
     private String name;
 
     private String flag;
