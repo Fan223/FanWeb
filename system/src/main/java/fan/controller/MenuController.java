@@ -6,9 +6,9 @@ import fan.pojo.dto.MenuDTO;
 import fan.pojo.query.MenuQuery;
 import fan.pojo.vo.MenuVO;
 import fan.service.MenuService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 

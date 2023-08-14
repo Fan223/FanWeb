@@ -8,7 +8,7 @@ import fan.pojo.vo.WordVO;
 import fan.service.WordService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 /**

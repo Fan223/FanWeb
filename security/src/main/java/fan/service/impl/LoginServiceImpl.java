@@ -10,7 +10,7 @@ import fan.service.UserService;
 import fan.utils.SysMapStruct;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Map;
 
 /**
